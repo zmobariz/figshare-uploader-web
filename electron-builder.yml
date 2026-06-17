@@ -5,9 +5,16 @@ directories:
   output: dist
   buildResources: build
 win:
-  target: portable
+  target:
+    - portable
+    - nsis
 portable:
   artifactName: "FigshareBulkUploader-${version}-portable-win.${ext}"
+nsis:
+  oneClick: true
+  perMachine: false
+  allowElevation: false
+  artifactName: "FigshareBulkUploader-${version}-setup-win.${ext}"
 mac:
   target: dmg
   category: public.app-category.productivity

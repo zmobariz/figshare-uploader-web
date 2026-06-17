@@ -22,3 +22,16 @@ jobs:
         run: npx electron-builder --publish ${{ startsWith(github.ref, 'refs/tags/') && 'always' || 'never' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish SHA-256 checksums
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        run: |
+          cd dist
+          shopt -s nullglob
+          files=( *.exe *.dmg *.AppImage *.zip )
+          [ ${#files[@]} -eq 0 ] && exit 0
+          sha256sum "${files[@]}" > "SHA256SUMS-${{ matrix.os }}.txt"
+          cat "SHA256SUMS-${{ matrix.os }}.txt"
+          gh release upload "${GITHUB_REF_NAME}" "SHA256SUMS-${{ matrix.os }}.txt" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

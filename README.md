@@ -9,6 +9,21 @@ Figshare articles in a single run.
 
 ---
 
+## Download (no install, no admin rights)
+
+Non-technical users don't need Node or a terminal — download a ready-to-run app from the
+[**Releases**](https://github.com/zmobariz/figshare-uploader-web/releases) page:
+
+- **Windows** — `FigshareBulkUploader-<version>-portable-win.exe` (double-click, nothing to install) or `...setup-win.exe` (per-user installer, no admin).
+- **macOS** — `FigshareBulkUploader-<version>-mac.dmg`.
+- **Linux** — `FigshareBulkUploader-<version>-linux.AppImage` (`chmod +x`, then run).
+
+The app isn't code-signed (signing costs money), so the first launch shows a security prompt:
+on Windows click **More info → Run anyway**, on macOS right-click → **Open**. **No administrator
+rights are required.** It's fully self-contained — the only network connection it makes is to the
+Figshare API. New to it? See the **[User guide](docs/USER-GUIDE.md)**. Deploying on managed/secure
+machines? See **[Deployment & security](docs/DEPLOYMENT-AND-SECURITY.md)**.
+
 ## Highlights (v2)
 
 **Reliability**
@@ -87,16 +102,17 @@ npm run docker:build
 npm run docker:run        # serves on http://localhost:4000
 ```
 
-## Desktop (optional, Electron)
+## Build the desktop apps yourself
 
-Electron is heavy, so it isn't a default dependency:
+Most users should just download from Releases (above). To build locally:
 
 ```bash
-npm install --save-dev electron
-npm run desktop
+npm install
+npm run desktop      # run the desktop window locally
+npm run dist         # build installer + portable for your OS into dist/
 ```
 
-For installers, add `electron-builder` and run `npx electron-builder`.
+Cross-platform releases (Windows / macOS / Linux) are built automatically by GitHub Actions on every `v*` tag.
 
 ---
 
@@ -163,4 +179,4 @@ electron/main.js   Optional desktop wrapper
 
 ## License
 
-Apache-2.0, in keeping with the original project.
+MIT — free for anyone to use, modify and redistribute. See the [LICENSE](LICENSE) file. (The original tool is Apache-2.0; this is a from-scratch reimplementation, so it is free to choose its own licence — MIT was picked for simplicity and broad academic reuse.)
