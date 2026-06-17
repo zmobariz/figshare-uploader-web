@@ -18,20 +18,45 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - name: Build & publish
-        run: npx electron-builder --publish ${{ startsWith(github.ref, 'refs/tags/') && 'always' || 'never' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish SHA-256 checksums
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Build (no publish)
+        run: npx electron-builder --publish never
+      - name: Stage artifacts
         shell: bash
         run: |
-          cd dist
+          mkdir -p staged
           shopt -s nullglob
-          files=( *.exe *.dmg *.AppImage *.zip )
-          [ ${#files[@]} -eq 0 ] && exit 0
-          sha256sum "${files[@]}" > "SHA256SUMS-${{ matrix.os }}.txt"
-          cat "SHA256SUMS-${{ matrix.os }}.txt"
-          gh release upload "${GITHUB_REF_NAME}" "SHA256SUMS-${{ matrix.os }}.txt" --clobber
+          for f in dist/*.exe dist/*.dmg dist/*.AppImage dist/*.zip; do cp "$f" staged/; done
+          ls -la staged
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ matrix.os }}
+          path: staged/*
+          if-no-files-found: error
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dl
+      - name: Collect + checksums
+        shell: bash
+        run: |
+          mkdir -p release
+          find dl -type f -exec cp -f {} release/ \;
+          cd release
+          sha256sum * > SHA256SUMS.txt
+          echo "==== files ===="; ls -la; echo "==== checksums ===="; cat SHA256SUMS.txt
+      - name: Publish single release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release create "${GITHUB_REF_NAME}" release/* \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Figshare Bulk Uploader ${GITHUB_REF_NAME}" \
+            --notes "Desktop apps for Windows, macOS and Linux — no admin rights needed. Verify downloads against SHA256SUMS.txt. Apps are unsigned; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md." \
+          || gh release upload "${GITHUB_REF_NAME}" release/* --clobber --repo "${GITHUB_REPOSITORY}"

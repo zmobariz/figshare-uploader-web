@@ -1,6 +1,6 @@
 {
   "name": "figshare-bulk-uploader",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Modern web app + CLI to bulk-create, update and manage Figshare articles from Excel/CSV spreadsheets.",
   "main": "electron/main.js",
   "type": "commonjs",
