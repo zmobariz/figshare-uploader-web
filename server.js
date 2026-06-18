@@ -31,7 +31,7 @@ app.use('/samples', express.static(path.join(__dirname, 'samples')));
 const fail = (res, e) => res.status(e.status || 502).json({ ok: false, error: e.message });
 const safeUnlink = (p) => fsp.unlink(p).catch(() => {});
 
-app.get('/api/health', (_q, res) => res.json({ ok: true, version: '2.0.0' }));
+app.get('/api/health', (_q, res) => res.json({ ok: true, version: require('./package.json').version }));
 
 app.post('/api/test-token', async (req, res) => {
   const { token, baseUrl } = req.body || {};

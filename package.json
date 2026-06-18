@@ -1,6 +1,6 @@
 {
   "name": "figshare-bulk-uploader",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Modern web app + CLI to bulk-create, update and manage Figshare articles from Excel/CSV spreadsheets.",
   "main": "electron/main.js",
   "type": "commonjs",
@@ -29,11 +29,14 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron": "^31.3.0",
-    "electron-builder": "^24.13.3"
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/zmobariz/figshare-uploader-web.git"
+  },
+  "overrides": {
+    "tar": "7.5.16"
   }
 }
