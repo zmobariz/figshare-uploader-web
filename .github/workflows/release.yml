@@ -4,7 +4,7 @@ on:
     tags: ['v*']
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
   build:
     strategy:
@@ -13,8 +13,8 @@ jobs:
         os: [windows-latest, macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
       - run: npm install
@@ -27,7 +27,7 @@ jobs:
           shopt -s nullglob
           for f in dist/*.exe dist/*.dmg dist/*.AppImage dist/*.zip; do cp "$f" staged/; done
           ls -la staged
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: app-${{ matrix.os }}
           path: staged/*
@@ -39,7 +39,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           path: dl
       - name: Collect + checksums
@@ -58,5 +58,5 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" release/* \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Figshare Bulk Uploader ${GITHUB_REF_NAME}" \
-            --notes "Desktop apps for Windows, macOS and Linux — no admin rights needed. Verify downloads against SHA256SUMS.txt. Apps are unsigned; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md." \
+            --notes "Desktop apps for Windows, macOS and Linux - no admin rights needed. Verify downloads against SHA256SUMS.txt. Apps are unsigned; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md." \
           || gh release upload "${GITHUB_REF_NAME}" release/* --clobber --repo "${GITHUB_REPOSITORY}"
