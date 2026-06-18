@@ -16,7 +16,7 @@ from a spreadsheet. Source: https://github.com/zmobariz/figshare-uploader-web
 - At runtime the app opens outbound **HTTPS to exactly one external host: the Figshare API**
   (`https://api.figshare.com` by default, or the institutional endpoint the user enters). Nothing else.
 - It runs a small web server bound to **localhost only** (127.0.0.1, ephemeral port) for its own UI;
-  it is not reachable from the network. Outbound requests are enforced against an **allow-list** (HTTPS only, Figshare hosts; private/loopback addresses blocked), configurable via `FIGSHARE_ALLOWED_HOSTS`.
+  it is not reachable from the network. Outbound requests are enforced against an **allow-list** (HTTPS only, Figshare hosts; private/loopback addresses blocked), hard-coded to `figshare.com` / `figsh.com`).
 - **No telemetry, analytics, crash reporting, update checks, or third-party/CDN calls.** All UI code
   and libraries (including the SheetJS spreadsheet parser) are bundled in the app, not fetched at runtime.
 
