@@ -71,7 +71,7 @@ npm install
 npm start
 ```
 
-Open **http://localhost:4000** (use `localhost`, not `127.0.0.1`).
+Open **http://127.0.0.1:4000**.
 
 Flow: connect → load spreadsheet → pick operation & options → (map columns, auto-matched on load) → validate → run. Watch per-row progress, retry failures, export the audit trail.
 
@@ -99,7 +99,7 @@ Run `node cli.js --help` for all flags. `--config` is the JSON exported from the
 
 ```bash
 npm run docker:build
-npm run docker:run        # serves on http://localhost:4000
+npm run docker:run        # serves on http://localhost:4000  # Docker maps the port; container still binds loopback inside
 ```
 
 ## Build the desktop apps yourself

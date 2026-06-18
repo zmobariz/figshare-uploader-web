@@ -41,7 +41,7 @@ async function createWindow() {
   });
   if (win.removeMenu) win.removeMenu();
   try { await waitForServer(port, 20000); } catch (e) { /* load anyway */ }
-  win.loadURL(`http://localhost:${port}`);
+  win.loadURL(`http://127.0.0.1:${port}`);
 }
 
 app.whenReady().then(createWindow);

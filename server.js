@@ -94,7 +94,7 @@ app.post('/api/process', upload.array('files'), async (req, res) => {
   finally { await Promise.all(files.map((f) => safeUnlink(f.path))); }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
   console.log('\n  Figshare Bulk Uploader v2');
   console.log('  ----------------------------------------');
   console.log(`  Open  ->  http://localhost:${PORT}`);
