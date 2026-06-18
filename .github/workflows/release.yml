@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     steps:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -50,6 +51,16 @@ jobs:
           cd release
           sha256sum * > SHA256SUMS.txt
           echo "==== files ===="; ls -la; echo "==== checksums ===="; cat SHA256SUMS.txt
+      - name: Install cosign
+        uses: sigstore/cosign-installer@398d4b0eeef1380460a10c8013a76f728fb906ac # v3
+      - name: Sign checksums (keyless)
+        shell: bash
+        run: |
+          cd release
+          cosign sign-blob --yes \
+            --output-signature SHA256SUMS.txt.sig \
+            --output-certificate SHA256SUMS.txt.pem \
+            SHA256SUMS.txt
       - name: Publish single release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,5 +69,5 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" release/* \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Figshare Bulk Uploader ${GITHUB_REF_NAME}" \
-            --notes "Desktop apps for Windows, macOS and Linux - no admin rights needed. Verify downloads against SHA256SUMS.txt. Apps are unsigned; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md." \
+            --notes "Desktop apps for Windows, macOS and Linux - no admin rights needed. Verify with SHA256SUMS.txt (also signed via Sigstore cosign: SHA256SUMS.txt.sig + .pem). Apps are unsigned binaries; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md." \
           || gh release upload "${GITHUB_REF_NAME}" release/* --clobber --repo "${GITHUB_REPOSITORY}"

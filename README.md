@@ -1,6 +1,7 @@
 # Figshare Bulk Uploader
 
 [![Build](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/release.yml/badge.svg)](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/release.yml)
+[![CodeQL](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/codeql.yml/badge.svg)](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/zmobariz/figshare-uploader-web/badge)](https://securityscorecards.dev/viewer/?uri=github.com/zmobariz/figshare-uploader-web)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 

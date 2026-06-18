@@ -31,6 +31,8 @@ teams make an informed decision. It does **not** certify the software as free of
   GitHub Actions from tagged source (`.github/workflows/release.yml`).
 - Each release includes `SHA256SUMS.txt`. Verify before distributing
   (`Get-FileHash <file> -Algorithm SHA256`, or `shasum -a 256 <file>`).
+- From v2.0.7, `SHA256SUMS.txt` is also signed with Sigstore **cosign** (keyless/OIDC). Verify:
+  `cosign verify-blob --certificate SHA256SUMS.txt.pem --signature SHA256SUMS.txt.sig --certificate-identity-regexp "^https://github.com/zmobariz/figshare-uploader-web" --certificate-oidc-issuer https://token.actions.githubusercontent.com SHA256SUMS.txt`
 - Binaries are **not code-signed** (no paid certificate); first launch triggers SmartScreen/Gatekeeper.
   On application-allow-listing platforms (WDAC/AppLocker), allow-list by the published SHA-256.
 
@@ -52,3 +54,28 @@ teams make an informed decision. It does **not** certify the software as free of
 
 ## Privacy
 - The tool collects no personal data itself. All data flows are between the user's machine and Figshare.
+
+## Alignment with the UK NCSC Software Security Code of Practice
+
+This project is maintained with reference to the UK **Software Security Code of Practice**
+(DSIT / NCSC, May 2025) — a *voluntary* code of 14 principles across four themes (secure design &
+development; build-environment / supply-chain security; secure deployment & maintenance; and
+communication with customers). This is a **self-assessed** statement of alignment — **not** a
+certification, audit result, or NCSC endorsement.
+
+How the project maps to the themes:
+
+- **Secure design & development** — small trust boundary (loopback UI; Figshare-only HTTPS
+  allow-list; token kept in memory only), automated code scanning (CodeQL), open and auditable source.
+- **Build-environment / supply-chain security** — CI builds from tagged source with least-privilege
+  workflow permissions; GitHub Actions and the Docker base image pinned by digest; dependencies pinned
+  via lockfile and tracked by Dependabot; OpenSSF Scorecard runs on the repository.
+- **Secure deployment & maintenance** — reproducible release builds; SHA-256 checksums plus Sigstore
+  cosign signatures; no telemetry or silent auto-update; documented guidance for managed/locked-down machines.
+- **Communication with customers** — this assurance statement, `SECURITY.md`, deployment & security
+  notes, a changelog, and a private vulnerability-disclosure route.
+
+Known gaps vs. a full assessment: binaries are not code-signed with a paid certificate; there is no
+formal third-party audit; and the project has a single maintainer (no separate code-review gate). The
+Code is formally completed via the Government's self-assessment form, signed off by a Senior
+Responsible Owner — this section is an informal mapping, not that form.
