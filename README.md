@@ -52,7 +52,7 @@ machines? See **[Deployment & security](docs/DEPLOYMENT-AND-SECURITY.md)**.
 - Export a results CSV, or download a copy of your sheet with new **ID / DOI / URL / status** columns appended.
 
 **Run it your way**
-- Web app (local Node server), headless **CLI**, **Docker**, or an optional **Electron** desktop window.
+- Prebuilt **desktop apps** (Windows / macOS / Linux), the **web app** (local Node server), a headless **CLI**, or **Docker**.
 
 ## Why there's a server
 
@@ -99,7 +99,7 @@ Run `node cli.js --help` for all flags. `--config` is the JSON exported from the
 
 ```bash
 npm run docker:build
-npm run docker:run        # serves on http://localhost:4000  # Docker maps the port; container still binds loopback inside
+npm run docker:run        # then open http://localhost:4000
 ```
 
 ## Build the desktop apps yourself
@@ -158,6 +158,7 @@ attaching, not sent as metadata).
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `PORT` | `4000` | Server port. |
+| `HOST` | `127.0.0.1` | Bind address. Loopback by default; the Docker image sets `0.0.0.0`. |
 | `FIGSHARE_TOKEN` | — | CLI token (alternative to `--token`). |
 | `FIGSHARE_BASE` | api.figshare.com/v2 | CLI base URL. |
 
@@ -174,7 +175,11 @@ public/
   shared.js        Mapping/metadata building (shared by browser + CLI)
 samples/           Example template + mapping
 Dockerfile         Container image
-electron/main.js   Optional desktop wrapper
+electron/main.js   Desktop wrapper (Electron)
+electron-builder.yml  Desktop packaging (portable / installer / dmg / AppImage)
+docs/              User guide + deployment & security notes
+.github/workflows/ CI: cross-platform release builds
+LICENSE · CHANGELOG.md · SECURITY.md
 ```
 
 ## License

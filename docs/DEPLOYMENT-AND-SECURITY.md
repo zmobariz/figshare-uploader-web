@@ -47,7 +47,7 @@ from a spreadsheet. Source: https://github.com/zmobariz/figshare-uploader-web
 
 ## Lowest-footprint alternative
 Where packaged binaries are not permitted but a runtime is, the same app runs **from source** with no
-binary: `npm install && npm start`, then open `http://localhost:4000`. A headless **CLI**
+binary: `npm install && npm start`, then open `http://127.0.0.1:4000`. A headless **CLI**
 (`node cli.js`) is provided for unattended/automated use.
 
 ## Summary for approval

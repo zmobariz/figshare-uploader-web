@@ -13,6 +13,7 @@ const fig = require('./lib/figshare');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const HOST = process.env.HOST || '127.0.0.1'; // loopback by default; Docker sets 0.0.0.0
 
 const TMP_DIR = path.join(os.tmpdir(), 'figshare-uploader-tmp');
 fs.mkdirSync(TMP_DIR, { recursive: true });
@@ -94,9 +95,9 @@ app.post('/api/process', upload.array('files'), async (req, res) => {
   finally { await Promise.all(files.map((f) => safeUnlink(f.path))); }
 });
 
-app.listen(PORT, '127.0.0.1', () => {
+app.listen(PORT, HOST, () => {
   console.log('\n  Figshare Bulk Uploader v2');
   console.log('  ----------------------------------------');
-  console.log(`  Open  ->  http://localhost:${PORT}`);
+  console.log(`  Open  ->  http://127.0.0.1:${PORT}`);
   console.log('  Press Ctrl+C to stop.\n');
 });

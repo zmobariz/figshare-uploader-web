@@ -14,6 +14,8 @@ COPY public ./public
 COPY samples ./samples
 
 ENV PORT=4000
+# Bind all interfaces *inside the container* so `docker run -p` can reach it.
+ENV HOST=0.0.0.0
 EXPOSE 4000
 
 # Drop to the built-in non-root user
