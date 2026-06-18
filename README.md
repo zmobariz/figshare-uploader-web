@@ -14,9 +14,11 @@ Figshare articles in a single run.
 Non-technical users don't need Node or a terminal — download a ready-to-run app from the
 [**Releases**](https://github.com/zmobariz/figshare-uploader-web/releases) page:
 
-- **Windows** — `FigshareBulkUploader-<version>-portable-win.exe` (double-click, nothing to install) or `...setup-win.exe` (per-user installer, no admin).
-- **macOS** — `FigshareBulkUploader-<version>-mac.dmg`.
-- **Linux** — `FigshareBulkUploader-<version>-linux.AppImage` (`chmod +x`, then run).
+Latest release: **v2.0.6** (or browse [all releases](https://github.com/zmobariz/figshare-uploader-web/releases) for newer):
+
+- **Windows** — [portable .exe](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.6/FigshareBulkUploader-2.0.6-portable-win.exe) (double-click, nothing to install) or [per-user installer](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.6/FigshareBulkUploader-2.0.6-setup-win.exe) (no admin).
+- **macOS** — [.dmg](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.6/FigshareBulkUploader-2.0.6-mac.dmg).
+- **Linux** — [.AppImage](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.6/FigshareBulkUploader-2.0.6-linux.AppImage) (`chmod +x`, then run).
 
 The app isn't code-signed (signing costs money), so the first launch shows a security prompt:
 on Windows click **More info → Run anyway**, on macOS right-click → **Open**. **No administrator
