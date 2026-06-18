@@ -11,7 +11,6 @@ jobs:
     name: Scorecard analysis
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
       id-token: write
     steps:
       - name: Checkout
@@ -24,7 +23,3 @@ jobs:
           results_file: results.sarif
           results_format: sarif
           publish_results: true
-      - name: Upload SARIF to code scanning
-        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357 # v3
-        with:
-          sarif_file: results.sarif
