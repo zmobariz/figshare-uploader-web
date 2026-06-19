@@ -1,4 +1,4 @@
-/* Figshare Bulk Uploader v2 — frontend */
+/* Bulk Uploader for Figshare v2 — frontend */
 (() => {
   'use strict';
   const $ = (s) => document.querySelector(s);
@@ -482,4 +482,68 @@
   document.querySelectorAll('#segPublish button').forEach((b) => b.classList.toggle('active', b.dataset.val === state.publish));
   $('#publishWarn').style.visibility = state.publish === 'true' ? 'visible' : 'hidden';
   applyOperationUI(); refreshTemplateSelect(); renderMapping();
+
+  /* ---------------- version + update notifications ---------------- */
+  const UB = { banner: $('#updateBanner'), text: $('#ubText'), download: $('#ubDownload'), restart: $('#ubRestart'), close: $('#ubClose') };
+  let _updateDismissed = false;
+  if (UB.close) UB.close.addEventListener('click', () => { _updateDismissed = true; UB.banner.classList.add('hidden'); });
+  if (UB.restart) UB.restart.addEventListener('click', () => { if (window.desktopUpdater) window.desktopUpdater.restart(); });
+  const _btnCheck = $('#btnCheckUpdates');
+  if (_btnCheck) _btnCheck.addEventListener('click', (e) => { e.preventDefault(); _updateDismissed = false; manualCheck(); });
+
+  function showBanner(msg, opts) {
+    opts = opts || {};
+    if (_updateDismissed || !UB.banner) return;
+    UB.text.textContent = msg;
+    UB.download.classList.toggle('hidden', !opts.showDownload);
+    UB.restart.classList.toggle('hidden', !opts.showRestart);
+    if (opts.url) UB.download.href = opts.url;
+    UB.banner.classList.remove('hidden');
+  }
+  function hideBanner() { if (UB.banner) UB.banner.classList.add('hidden'); }
+
+  async function fetchVersion(force) {
+    try { const r = await fetch('/api/version' + (force ? '?force=1' : '')); return await r.json(); }
+    catch (e) { return null; }
+  }
+  function setAboutVersion(v) { const a = $('#aboutVersion'); if (a && v && v.current) a.textContent = 'v' + v.current; }
+  function flashUpToDate() {
+    const a = $('#aboutVersion'); if (!a) return;
+    const old = a.textContent; a.textContent = old + ' · up to date'; setTimeout(() => { a.textContent = old; }, 2500);
+  }
+
+  async function webUpdateCheck(force) {
+    const v = await fetchVersion(force);
+    setAboutVersion(v);
+    if (v && v.updateAvailable) showBanner('A new version (v' + v.latest + ') is available — you have v' + v.current + '.', { showDownload: true, url: v.url });
+    else if (force) flashUpToDate();
+    return v;
+  }
+  async function manualCheck() {
+    if (window.desktopUpdater) window.desktopUpdater.check();
+    await webUpdateCheck(true);
+  }
+
+  function initVersionAndUpdates() {
+    fetchVersion(false).then((v) => {
+      setAboutVersion(v);
+      if (window.desktopUpdater) {
+        // Desktop build: native auto-updater drives the banner; fall back to the
+        // web download banner if it errors (unsigned macOS / portable .exe).
+        window.desktopUpdater.onState((st) => {
+          if (!st || _updateDismissed) return;
+          const ver = (st.info && st.info.version) || '';
+          if (st.state === 'available') showBanner('Downloading update v' + ver + '…', {});
+          else if (st.state === 'downloading') showBanner('Downloading update… ' + Math.round((st.info && st.info.percent) || 0) + '%', {});
+          else if (st.state === 'downloaded') showBanner('Update v' + ver + ' is ready to install.', { showRestart: true });
+          else if (st.state === 'error') { if (v && v.updateAvailable) showBanner('A new version (v' + v.latest + ') is available.', { showDownload: true, url: v.url }); }
+          else if (st.state === 'none') hideBanner();
+        });
+        window.desktopUpdater.check();
+      } else if (v && v.updateAvailable) {
+        showBanner('A new version (v' + v.latest + ') is available — you have v' + v.current + '.', { showDownload: true, url: v.url });
+      }
+    });
+  }
+  initVersionAndUpdates();
 })();

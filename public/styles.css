@@ -319,3 +319,27 @@ input[type=date] { width: auto; }
 .status-pill.dup { background: #ece9ff; color: #5b4bd6; }
 .status-pill.warn { background: var(--warn-soft); color: var(--warn); }
 @media (prefers-color-scheme: dark) { .status-pill.dup { background: #251f4a; color: #b3a8ff; } }
+
+/* ---- update banner + about footer (v2.1) ---- */
+.update-banner {
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 18px; padding: 12px 16px;
+  background: var(--primary-soft); color: var(--text);
+  border: 1px solid var(--primary); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+.update-banner.hidden { display: none; }
+.update-banner .ub-icon { font-size: 18px; line-height: 1; }
+.update-banner .ub-text { flex: 1; font-weight: 600; font-size: 14px; }
+.update-banner .ub-actions { display: flex; align-items: center; gap: 8px; }
+.ub-btn {
+  display: inline-block; text-decoration: none; cursor: pointer;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 6px 12px; font-size: 13px; font-weight: 600; font-family: inherit;
+}
+.ub-btn.primary { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); }
+.ub-btn.hidden { display: none; }
+.ub-close { background: transparent; border: none; cursor: pointer; color: var(--muted); font-size: 20px; line-height: 1; padding: 0 4px; }
+.foot .small { font-size: 12px; }
+.foot a, .foot .linklike { color: var(--primary); }

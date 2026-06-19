@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Figshare Bulk Uploader</title>
+  <title>Bulk Uploader for Figshare</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128228;</text></svg>" />
 </head>
@@ -12,7 +12,7 @@
     <div class="brand">
       <div class="brand-mark">&#11041;</div>
       <div>
-        <h1>Figshare Bulk Uploader</h1>
+        <h1>Bulk Uploader for Figshare</h1>
         <p class="brand-sub">Create, update &amp; manage Figshare articles in bulk from a spreadsheet.</p>
       </div>
     </div>
@@ -20,6 +20,15 @@
   </header>
 
   <main class="wrap">
+    <div id="updateBanner" class="update-banner hidden" role="status">
+      <span class="ub-icon">&#8635;</span>
+      <span class="ub-text" id="ubText"></span>
+      <span class="ub-actions">
+        <a class="ub-btn" id="ubDownload" href="https://github.com/zmobariz/bulk-uploader-for-figshare/releases/latest" target="_blank" rel="noopener">Download</a>
+        <button class="ub-btn primary hidden" id="ubRestart" type="button">Restart to update</button>
+        <button class="ub-close" id="ubClose" type="button" title="Dismiss" aria-label="Dismiss">&times;</button>
+      </span>
+    </div>
 
     <section class="card">
       <div class="card-head"><span class="step-badge">1</span>
@@ -225,7 +234,10 @@
       </div>
     </section>
 
-    <footer class="foot"><p>Unofficial tool &middot; not affiliated with Figshare. Inspired by <a href="https://github.com/amoe/figshare-uploader" target="_blank" rel="noopener">amoe/figshare-uploader</a>.</p></footer>
+    <footer class="foot">
+      <p><strong>Bulk Uploader for Figshare</strong> <span id="aboutVersion" class="muted"></span> &middot; <a href="https://github.com/zmobariz/bulk-uploader-for-figshare" target="_blank" rel="noopener">GitHub repo</a> &middot; <a href="https://github.com/zmobariz/bulk-uploader-for-figshare/releases" target="_blank" rel="noopener">Releases</a> &middot; <button class="linklike" id="btnCheckUpdates" type="button">Check for updates</button></p>
+      <p class="small muted">Unofficial, MIT-licensed tool &middot; not affiliated with or endorsed by Figshare. Inspired by <a href="https://github.com/amoe/figshare-uploader" target="_blank" rel="noopener">amoe/figshare-uploader</a>.</p>
+    </footer>
   </main>
 
   <script src="vendor/xlsx.full.min.js" defer></script>

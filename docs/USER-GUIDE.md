@@ -3,7 +3,7 @@
 A 2-minute walkthrough. No coding, no admin rights.
 
 ## 1. Get the app
-Download from the [Releases page](https://github.com/zmobariz/figshare-uploader-web/releases):
+Download from the [Releases page](https://github.com/zmobariz/bulk-uploader-for-figshare/releases):
 - **Windows** — the `...portable-win.exe` (just double-click) or the `...setup-win.exe` per-user installer.
 - **macOS** — the `...mac.dmg`.
 - **Linux** — the `...linux.AppImage` (`chmod +x` then run).

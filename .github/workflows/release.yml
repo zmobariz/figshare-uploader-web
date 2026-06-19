@@ -25,8 +25,8 @@ jobs:
         run: |
           mkdir -p staged
           shopt -s nullglob
-          for f in dist/*.exe dist/*.dmg dist/*.AppImage dist/*.zip; do cp "$f" staged/; done
-          ls -la staged
+          for f in dist/*.exe dist/*.dmg dist/*.AppImage dist/*.zip dist/*.yml dist/*.blockmap; do cp "$f" staged/; done
+          ls -la dist; ls -la staged
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: app-${{ matrix.os }}
@@ -68,6 +68,6 @@ jobs:
         run: |
           gh release create "${GITHUB_REF_NAME}" release/* \
             --repo "${GITHUB_REPOSITORY}" \
-            --title "Figshare Bulk Uploader ${GITHUB_REF_NAME}" \
-            --notes "Desktop apps for Windows, macOS and Linux - no admin rights needed. Verify with SHA256SUMS.txt (also signed via Sigstore cosign: SHA256SUMS.txt.sig + .pem). Apps are unsigned binaries; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md." \
+            --title "Bulk Uploader for Figshare ${GITHUB_REF_NAME}" \
+            --notes "Desktop apps for Windows, macOS and Linux - no admin rights needed. Verify with SHA256SUMS.txt (also signed via Sigstore cosign: SHA256SUMS.txt.sig + .pem). Apps are unsigned binaries; first launch: Windows -> More info -> Run anyway, macOS -> right-click -> Open. See docs/DEPLOYMENT-AND-SECURITY.md. From v2.1.0 the apps show update notifications; the Windows installer and Linux AppImage can auto-update (disable with NO_UPDATE_CHECK=1)." \
           || gh release upload "${GITHUB_REF_NAME}" release/* --clobber --repo "${GITHUB_REPOSITORY}"

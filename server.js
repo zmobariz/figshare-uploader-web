@@ -1,5 +1,5 @@
 /**
- * Figshare Bulk Uploader — web server (thin layer over lib/figshare.js)
+ * Bulk Uploader for Figshare — web server (thin layer over lib/figshare.js)
  * Serves the SPA and proxies/orchestrates the Figshare API.
  * Tokens are supplied per request and never written to disk or logged.
  */
@@ -10,6 +10,7 @@ const fsp = require('fs/promises');
 const os = require('os');
 const path = require('path');
 const fig = require('./lib/figshare');
+const update = require('./lib/update');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -33,6 +34,11 @@ const fail = (res, e) => res.status(e.status || 502).json({ ok: false, error: e.
 const safeUnlink = (p) => fsp.unlink(p).catch(() => {});
 
 app.get('/api/health', (_q, res) => res.json({ ok: true, version: require('./package.json').version }));
+
+app.get('/api/version', async (req, res) => {
+  const info = await update.checkForUpdate({ force: String(req.query.force || '') === '1' });
+  res.json({ ok: true, repo: update.REPO, ...info });
+});
 
 app.post('/api/test-token', async (req, res) => {
   const { token, baseUrl } = req.body || {};
@@ -96,7 +102,7 @@ app.post('/api/process', upload.array('files'), async (req, res) => {
 });
 
 app.listen(PORT, HOST, () => {
-  console.log('\n  Figshare Bulk Uploader v2');
+  console.log('\n  Bulk Uploader for Figshare v2');
   console.log('  ----------------------------------------');
   console.log(`  Open  ->  http://127.0.0.1:${PORT}`);
   console.log('  Press Ctrl+C to stop.\n');

@@ -1,8 +1,8 @@
-# Figshare Bulk Uploader
+# Bulk Uploader for Figshare
 
-[![Build](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/release.yml/badge.svg)](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/release.yml)
-[![CodeQL](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/codeql.yml/badge.svg)](https://github.com/zmobariz/figshare-uploader-web/actions/workflows/codeql.yml)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/zmobariz/figshare-uploader-web/badge)](https://securityscorecards.dev/viewer/?uri=github.com/zmobariz/figshare-uploader-web)
+[![Build](https://github.com/zmobariz/bulk-uploader-for-figshare/actions/workflows/release.yml/badge.svg)](https://github.com/zmobariz/bulk-uploader-for-figshare/actions/workflows/release.yml)
+[![CodeQL](https://github.com/zmobariz/bulk-uploader-for-figshare/actions/workflows/codeql.yml/badge.svg)](https://github.com/zmobariz/bulk-uploader-for-figshare/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/zmobariz/bulk-uploader-for-figshare/badge)](https://securityscorecards.dev/viewer/?uri=github.com/zmobariz/bulk-uploader-for-figshare)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A modern, browser-based replacement for the old desktop
@@ -17,13 +17,13 @@ Figshare articles in a single run.
 ## Download (no install, no admin rights)
 
 Non-technical users don't need Node or a terminal — download a ready-to-run app from the
-[**Releases**](https://github.com/zmobariz/figshare-uploader-web/releases) page:
+[**Releases**](https://github.com/zmobariz/bulk-uploader-for-figshare/releases) page:
 
-Latest release: **v2.0.7** (or browse [all releases](https://github.com/zmobariz/figshare-uploader-web/releases) for newer):
+Latest release: **v2.1.0** (or browse [all releases](https://github.com/zmobariz/bulk-uploader-for-figshare/releases) for newer):
 
-- **Windows** — [portable .exe](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.7/FigshareBulkUploader-2.0.7-portable-win.exe) (double-click, nothing to install) or [per-user installer](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.7/FigshareBulkUploader-2.0.7-setup-win.exe) (no admin).
-- **macOS** — [.dmg](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.7/FigshareBulkUploader-2.0.7-mac.dmg).
-- **Linux** — [.AppImage](https://github.com/zmobariz/figshare-uploader-web/releases/download/v2.0.7/FigshareBulkUploader-2.0.7-linux.AppImage) (`chmod +x`, then run).
+- **Windows** — [portable .exe](https://github.com/zmobariz/bulk-uploader-for-figshare/releases/download/v2.1.0/BulkUploaderForFigshare-2.1.0-portable-win.exe) (double-click, nothing to install) or [per-user installer](https://github.com/zmobariz/bulk-uploader-for-figshare/releases/download/v2.1.0/BulkUploaderForFigshare-2.1.0-setup-win.exe) (no admin).
+- **macOS** — [.dmg](https://github.com/zmobariz/bulk-uploader-for-figshare/releases/download/v2.1.0/BulkUploaderForFigshare-2.1.0-mac.dmg).
+- **Linux** — [.AppImage](https://github.com/zmobariz/bulk-uploader-for-figshare/releases/download/v2.1.0/BulkUploaderForFigshare-2.1.0-linux.AppImage) (`chmod +x`, then run).
 
 The app isn't code-signed (signing costs money), so the first launch shows a security prompt:
 on Windows click **More info → Run anyway**, on macOS right-click → **Open**. **No administrator
@@ -37,15 +37,16 @@ Designed to run locally with a small, auditable trust boundary:
 
 - No administrator rights required; no background services, drivers, scheduled tasks or autostart entries.
 - Local UI only — the web interface binds to `127.0.0.1` by default.
-- No telemetry, analytics, crash reporting, update checks or third-party/CDN calls (libraries are bundled).
+- No telemetry, analytics, crash reporting, or third-party/CDN calls — libraries are bundled.
+- One optional non-Figshare connection: an update check to the GitHub Releases API (and update downloads from GitHub) so the app can tell you a newer version exists. No token or data is sent there; disable with `NO_UPDATE_CHECK=1`.
 - Figshare personal tokens are held in memory for the session only, sent only to the Figshare API over HTTPS, and never written to disk or logged.
-- Outbound requests are allow-listed to Figshare hosts; private/loopback destinations are rejected.
+- Figshare API requests are allow-listed to Figshare hosts; private/loopback destinations are rejected.
 - Release binaries ship with **SHA-256 checksums**, built in CI from tagged source.
-- Dependencies and code are scanned automatically (Dependabot + CodeQL); report issues privately via [GitHub Security Advisories](https://github.com/zmobariz/figshare-uploader-web/security/advisories/new).
+- Dependencies and code are scanned automatically (Dependabot + CodeQL); report issues privately via [GitHub Security Advisories](https://github.com/zmobariz/bulk-uploader-for-figshare/security/advisories/new).
 
 This is **not** a guarantee that the software is free of vulnerabilities. It means the project is open source, auditable, locally run, token-minimising, telemetry-free, hash-verifiable, and continuously scanned. Full detail: **[Assurance statement](ASSURANCE.md)** &middot; **[Deployment & security notes](docs/DEPLOYMENT-AND-SECURITY.md)**.
 
-**IT / security approval summary:** runs locally &middot; no admin &middot; no machine-wide install &middot; no telemetry &middot; no token storage &middot; single outbound destination (Figshare API over HTTPS) &middot; hash-verifiable binaries &middot; public, auditable source.
+**IT / security approval summary:** runs locally &middot; no admin &middot; no machine-wide install &middot; no telemetry &middot; no token storage &middot; outbound to the Figshare API and (optionally) GitHub for update checks/downloads — disable with `NO_UPDATE_CHECK=1` &middot; hash-verifiable binaries &middot; public, auditable source.
 
 ## Highlights (v2)
 

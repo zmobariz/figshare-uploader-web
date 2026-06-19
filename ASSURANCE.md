@@ -1,6 +1,6 @@
 # Assurance statement
 
-This describes the security posture of **Figshare Bulk Uploader** to help users and IT/security
+This describes the security posture of **Bulk Uploader for Figshare** to help users and IT/security
 teams make an informed decision. It does **not** certify the software as free of vulnerabilities.
 
 ## What this does and does not prove
@@ -21,10 +21,13 @@ teams make an informed decision. It does **not** certify the software as free of
   temporary copies go to the OS temp dir and are deleted after each row.
 
 ## Network behaviour
-- The only outbound calls are HTTPS to an allow-list of Figshare hosts (`figshare.com`, `figsh.com`).
-  Other, private, loopback and link-local hosts are rejected before any request is made.
-- No telemetry, analytics, crash reporting, update checks or third-party/CDN calls at runtime
-  (the SheetJS library is bundled).
+- Figshare API traffic is HTTPS to an allow-list of Figshare hosts (`figshare.com`, `figsh.com`);
+  other, private, loopback and link-local hosts are rejected before any request is made.
+- One optional, non-Figshare connection: an update check to the GitHub Releases API (`api.github.com`),
+  and — on desktop builds that support it — update downloads from GitHub. No token, telemetry or
+  personal data is sent; disable entirely with `NO_UPDATE_CHECK=1`. If GitHub is blocked the check
+  fails silently and the app continues.
+- No analytics, crash reporting or other third-party/CDN calls at runtime (the SheetJS library is bundled).
 
 ## Build & release integrity
 - Release binaries (Windows portable + per-user installer, macOS `.dmg`, Linux AppImage) are built by
@@ -32,7 +35,7 @@ teams make an informed decision. It does **not** certify the software as free of
 - Each release includes `SHA256SUMS.txt`. Verify before distributing
   (`Get-FileHash <file> -Algorithm SHA256`, or `shasum -a 256 <file>`).
 - From v2.0.7, `SHA256SUMS.txt` is also signed with Sigstore **cosign** (keyless/OIDC). Verify:
-  `cosign verify-blob --certificate SHA256SUMS.txt.pem --signature SHA256SUMS.txt.sig --certificate-identity-regexp "^https://github.com/zmobariz/figshare-uploader-web" --certificate-oidc-issuer https://token.actions.githubusercontent.com SHA256SUMS.txt`
+  `cosign verify-blob --certificate SHA256SUMS.txt.pem --signature SHA256SUMS.txt.sig --certificate-identity-regexp "^https://github.com/zmobariz/bulk-uploader-for-figshare" --certificate-oidc-issuer https://token.actions.githubusercontent.com SHA256SUMS.txt`
 - Binaries are **not code-signed** (no paid certificate); first launch triggers SmartScreen/Gatekeeper.
   On application-allow-listing platforms (WDAC/AppLocker), allow-list by the published SHA-256.
 
@@ -42,7 +45,7 @@ teams make an informed decision. It does **not** certify the software as free of
 
 ## Vulnerability disclosure
 - Report privately via GitHub Security Advisories:
-  https://github.com/zmobariz/figshare-uploader-web/security/advisories/new — see `SECURITY.md`.
+  https://github.com/zmobariz/bulk-uploader-for-figshare/security/advisories/new — see `SECURITY.md`.
 
 ## Known limitations
 - Unsigned binaries (SmartScreen/Gatekeeper prompts; no publisher-based allow-list rules).
@@ -71,7 +74,7 @@ How the project maps to the themes:
   workflow permissions; GitHub Actions and the Docker base image pinned by digest; dependencies pinned
   via lockfile and tracked by Dependabot; OpenSSF Scorecard runs on the repository.
 - **Secure deployment & maintenance** — reproducible release builds; SHA-256 checksums plus Sigstore
-  cosign signatures; no telemetry or silent auto-update; documented guidance for managed/locked-down machines.
+  cosign signatures; no telemetry; update checks are opt-out (`NO_UPDATE_CHECK=1`) and desktop auto-update always prompts before installing (never silent); documented guidance for managed/locked-down machines.
 - **Communication with customers** — this assurance statement, `SECURITY.md`, deployment & security
   notes, a changelog, and a private vulnerability-disclosure route.
 

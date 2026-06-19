@@ -4,7 +4,7 @@ This one-pager is for the people who approve software on managed machines.
 
 ## What it is
 An open-source (MIT) desktop app that lets researchers create/update Figshare records in bulk
-from a spreadsheet. Source: https://github.com/zmobariz/figshare-uploader-web
+from a spreadsheet. Source: https://github.com/zmobariz/bulk-uploader-for-figshare
 
 ## Privileges
 - **Requires no administrator rights** to install or run.
@@ -13,12 +13,16 @@ from a spreadsheet. Source: https://github.com/zmobariz/figshare-uploader-web
 - Makes no machine-wide changes: **no services, drivers, scheduled tasks, or autostart.**
 
 ## Network behaviour
-- At runtime the app opens outbound **HTTPS to exactly one external host: the Figshare API**
-  (`https://api.figshare.com` by default, or the institutional endpoint the user enters). Nothing else.
+- At runtime the app makes outbound **HTTPS to the Figshare API** (`https://api.figshare.com` by
+  default, or the institutional endpoint the user enters) for all upload/metadata work.
 - It runs a small web server bound to **localhost only** (127.0.0.1, ephemeral port) for its own UI;
   it is not reachable from the network. Outbound requests are enforced against an **allow-list** (HTTPS only, Figshare hosts; private/loopback addresses blocked), hard-coded to `figshare.com` / `figsh.com`).
-- **No telemetry, analytics, crash reporting, update checks, or third-party/CDN calls.** All UI code
-  and libraries (including the SheetJS spreadsheet parser) are bundled in the app, not fetched at runtime.
+- **One optional second destination: GitHub.** The app checks the GitHub Releases API (`api.github.com`)
+  for a newer version, and the Windows installer / Linux AppImage can download updates from GitHub.
+  No token or personal data is sent. **Disable with `NO_UPDATE_CHECK=1`**; if GitHub is blocked the
+  check fails silently. Set that variable for fully air-gapped deployments.
+- **No telemetry, analytics, crash reporting, or third-party/CDN calls.** All UI code and libraries
+  (including the SheetJS spreadsheet parser) are bundled in the app, not fetched at runtime.
 
 ## Data handling
 - The Figshare **personal token** is entered by the user, kept in memory for the session, sent only
@@ -51,5 +55,4 @@ binary: `npm install && npm start`, then open `http://127.0.0.1:4000`. A headles
 (`node cli.js`) is provided for unattended/automated use.
 
 ## Summary for approval
-Open-source · MIT · no admin · no telemetry · localhost UI · single outbound host (Figshare API over
-HTTPS) · token never stored · hash-verifiable builds.
+Open-source · MIT · no admin · no telemetry · localhost UI · outbound to the Figshare API (+ optional GitHub update check, disable with NO_UPDATE_CHECK=1) · token never stored · hash-verifiable builds.
